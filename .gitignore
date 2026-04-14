@@ -142,3 +142,23 @@ $RECYCLE.BIN/
 
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij,windows,macos,visualstudiocode
+
+# deployment env
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+
+# deploy runtime assets
+deploy/infra/cert/
+deploy/infra/certbot-logs/
+deploy/infra/certbot-work/
+
+# future runtime data
+mysql/data/
+redis/data/
+kafka/data/
+jenkins/data/
+
+# runtime logs
+logs/

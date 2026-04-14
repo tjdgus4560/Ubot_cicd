@@ -8,14 +8,15 @@
 - `진행과정/`: 실제로 어떤 방향으로 진행했고 어디까지 적용했는지 기록하는 진행 문서
 
 ## 현재 문서
-- `배포와인프라/ubot_cicd_study_roadmap.md`
-- `배포와인프라/linux_infra_commands_guide.md`
-- `배포와인프라/one_server_compose_grouping_guide.md`
-- `웹네트워크/http_https_learning_guide.md`
+- `배포와인프라/배포학습_전체로드맵.md`
+- `배포와인프라/리눅스_인프라_명령어_정리.md`
+- `배포와인프라/최종_서버_배포구조_가이드.md`
+- `웹네트워크/HTTP_HTTPS_이해정리.md`
 - `진행과정/README.md`
 - `진행과정/진행상태_템플릿.md`
-- `진행과정/current_oracle_status_2026-04-06.md`
-- `진행과정/oracle_first_session_checklist.md`
+- `진행과정/오라클클라우드_현재상태_2026-04-06.md`
+- `진행과정/오라클서버_초기점검_체크리스트.md`
+- `진행과정/서버초기패키지_도커설치정리_2026-04-08.md`
 - `intellij_markdown_preview.css`
 
 ## 정리 원칙

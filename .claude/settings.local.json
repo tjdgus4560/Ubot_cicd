@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs grep:*)",
+      "Bash(find /c/StudyYearly/2024/Ubot_cicd/backend -maxdepth 3 -type f -name application*.yml -o -name build.gradle)"
+    ]
+  }
+}

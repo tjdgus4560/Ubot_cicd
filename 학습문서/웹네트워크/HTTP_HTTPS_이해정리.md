@@ -26,7 +26,7 @@
 ### 브라우저 사용자의 일반 요청 흐름
 ```text
 브라우저
-  -> https://www.ubot.site
+  -> https://ubot2.site
   -> Nginx
   -> Frontend 또는 /api 경로는 Spring Boot
   -> 응답 반환
@@ -100,9 +100,9 @@ Set-Cookie: refreshToken=...
 - 경로(path), 쿼리(query), 스킴(scheme)을 구분해야 한다
 
 예시:
-- `https://www.ubot.site/api/member/me`
+- `https://ubot2.site/api/member/me`
   - 스킴: `https`
-  - 호스트: `www.ubot.site`
+  - 호스트: `ubot2.site`
   - 경로: `/api/member/me`
 
 ### 이 프로젝트 기준으로 보면
@@ -278,13 +278,13 @@ Origin은 보통 아래 세 가지의 조합으로 결정된다.
 
 예시:
 - `http://localhost:3000`
-- `https://autric.site`
-- `https://www.autric.site`
+- `https://ubot2.site`
+- `https://www.ubot2.site`
 
 서로 하나라도 다르면 다른 origin이다.
 
 ### 현재 코드에서 보이는 설정
-- `allowedOrigins`: `http://localhost:3000`, `https://autric.site`, `https://www.autric.site`
+- `allowedOrigins`: `http://localhost:3000`, `https://ubot2.site`, `https://www.ubot2.site`
 - `allowCredentials(true)`
 
 ### 여기서 꼭 알아야 하는 규칙
@@ -479,7 +479,7 @@ WebSocket은 처음 연결을 시작할 때 HTTP 핸드셰이크를 사용한다
 
 ### 체크포인트 2. 프론트와 백엔드의 배치 방식
 - 서로 다른 origin으로 두면 CORS와 쿠키 정책이 복잡해진다.
-- 가능하면 `https://www.ubot.site` 아래에서 `Nginx -> /api -> backend` 구조로 단일 사이트 운영이 더 단순하다.
+- 가능하면 `https://ubot2.site` 아래에서 `Nginx -> /api -> backend` 구조로 단일 사이트 운영이 더 단순하다.
 
 ### 체크포인트 3. OAuth2 redirect 일관성
 - 카카오 설정, 백엔드 `redirect-uri`, 프론트 redirect URL, 실제 도메인이 전부 일치해야 한다.

@@ -1,0 +1,117 @@
+services:
+  nginx:
+    container_name: ubot-nginx
+    image: nginx:stable-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./webroot:/var/www/certbot
+    networks:
+      - ubot_app_net
+
+  mysql:
+    container_name: ubot-mysql
+    image: mysql:8.0
+    restart: unless-stopped
+    command:
+      - mysqld
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    environment:
+      TZ: ${TZ:-Asia/Seoul}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-upbit_auto}
+      MYSQL_USER: ${MYSQL_USER:-autric}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-change-me}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change-me}
+    expose:
+      - "3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - ubot_app_net
+
+  redis:
+    container_name: ubot-redis
+    image: redis:7.2-alpine
+    restart: unless-stopped
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+    expose:
+      - "6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - ubot_app_net
+
+  kafka:
+    container_name: ubot-kafka
+    image: bitnami/kafka:4.0.0
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Asia/Seoul}
+      KAFKA_CFG_NODE_ID: 1
+      KAFKA_CFG_PROCESS_ROLES: controller,broker
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_CFG_LISTENERS: CONTROLLER://:9093,PLAINTEXT://:9092
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_CFG_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+    expose:
+      - "9092"
+      - "9093"
+    volumes:
+      - kafka_data:/bitnami/kafka
+    networks:
+      - ubot_app_net
+
+  kafka-ui:
+    container_name: ubot-kafka-ui
+    image: ghcr.io/kafbat/kafka-ui:latest
+    restart: unless-stopped
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      SERVER_SERVLET_CONTEXT_PATH: /kafka-ui
+    expose:
+      - "8080"
+    depends_on:
+      - kafka
+    networks:
+      - ubot_app_net
+
+  jenkins:
+    container_name: ubot-jenkins
+    image: jenkins/jenkins:lts-jdk17
+    restart: unless-stopped
+    user: root
+    environment:
+      TZ: ${TZ:-Asia/Seoul}
+      JENKINS_OPTS: --prefix=/jenkins
+    expose:
+      - "8080"
+      - "50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - ubot_app_net
+
+volumes:
+  mysql_data:
+  redis_data:
+  kafka_data:
+  jenkins_home:
+
+networks:
+  ubot_app_net:
+    external: true

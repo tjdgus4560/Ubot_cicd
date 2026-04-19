@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     app_version: str = "1.0.0"
 
     class Config:
-        env_file = ".env"
+        env_file = ".env.local"
         env_file_encoding = "utf-8"
 
 settings = Settings()

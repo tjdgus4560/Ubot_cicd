@@ -9,7 +9,9 @@ WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
+RUN rm -f .env .env.local .env.production && \
+    if [ -f .env.prod ]; then cp .env.prod .env.production; fi && \
+    npm run build
 
 FROM node:22-alpine AS runner
 WORKDIR /app

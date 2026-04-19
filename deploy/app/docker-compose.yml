@@ -1,0 +1,43 @@
+services:
+  frontend:
+    container_name: ubot-frontend
+    build:
+      context: ../../frontend
+      dockerfile: Dockerfile
+    env_file:
+      - ../../frontend/.env.prod
+    restart: unless-stopped
+    expose:
+      - "3000"
+    networks:
+      - ubot_app_net
+
+  backend:
+    container_name: ubot-backend
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
+    env_file:
+      - ../../backend/.env.prod
+    restart: unless-stopped
+    expose:
+      - "8080"
+    networks:
+      - ubot_app_net
+
+  strategy_fastapi:
+    container_name: ubot-strategy
+    build:
+      context: ../../strategy_fastapi
+      dockerfile: Dockerfile
+    env_file:
+      - ../../strategy_fastapi/.env.prod
+    restart: unless-stopped
+    expose:
+      - "8000"
+    networks:
+      - ubot_app_net
+
+networks:
+  ubot_app_net:
+    external: true

@@ -1,11 +1,11 @@
 package com.autric.upbit.global.security.jwt;
 
+import com.autric.upbit.global.config.properties.AppJwtProperties;
 import com.autric.upbit.global.response.code.ErrorCode;
 import com.autric.upbit.global.response.exception.BusinessException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -31,14 +31,10 @@ public class JwtProvider {
      * @param accessTokenValidity AccessToken 유효 시간
      * @param refreshTokenValidity RefreshToken 유효 시간
      */
-    public JwtProvider(
-            @Value("${jwt.secret}") String secret,
-            @Value("${access-expired}") long accessTokenValidity,
-            @Value("${refresh-expired}") long refreshTokenValidity
-    ) {
-        this.secret = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-        this.accessTokenValidity = accessTokenValidity;
-        this.refreshTokenValidity = refreshTokenValidity;
+    public JwtProvider(AppJwtProperties jwtProperties) {
+        this.secret = Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8));
+        this.accessTokenValidity = jwtProperties.getAccessExpired();
+        this.refreshTokenValidity = jwtProperties.getRefreshExpired();
     }
 
     /**

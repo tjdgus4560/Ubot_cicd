@@ -16,4 +16,6 @@ spring:
       group-id: ${KAFKA_GROUP_ID}  # 컨슈머 그룹 식별자
       auto-offset-reset: earliest  # 초기 오프셋(가장 처음 메세지부터 소비)
 
-redirect-url: http://localhost:3000/
+app:
+  oauth:
+    redirect-url: http://localhost:3000/

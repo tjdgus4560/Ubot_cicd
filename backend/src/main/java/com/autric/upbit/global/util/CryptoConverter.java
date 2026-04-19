@@ -1,9 +1,9 @@
 package com.autric.upbit.global.util;
 
+import com.autric.upbit.global.config.properties.AppCryptoProperties;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
@@ -26,8 +26,11 @@ public class CryptoConverter implements AttributeConverter<String, String> {
     private static final String KEY_ALGORITHM = "AES";
     private static final int IV_SIZE = 16;
 
-    @Value("${crypto.secret-key}")
-    private String secretKey;
+    private final AppCryptoProperties cryptoProperties;
+
+    public CryptoConverter(AppCryptoProperties cryptoProperties) {
+        this.cryptoProperties = cryptoProperties;
+    }
 
     /**
      * DB 저장 시: 평문 → 암호화
@@ -115,7 +118,7 @@ public class CryptoConverter implements AttributeConverter<String, String> {
      */
     private byte[] getKeyBytes() {
         byte[] keyBytes = new byte[32];
-        byte[] secretKeyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+        byte[] secretKeyBytes = cryptoProperties.getSecretKey().getBytes(StandardCharsets.UTF_8);
         System.arraycopy(secretKeyBytes, 0, keyBytes, 0, Math.min(secretKeyBytes.length, 32));
         return keyBytes;
     }

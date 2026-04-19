@@ -1,25 +1,27 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DATABASE_URL_PROD}/${DATABASE}?serverTimezone=Asia/Seoul
-    username: ${MYSQL_ID_PROD}
-    password: ${MYSQL_PASSWORD_PROD}
+    url: jdbc:mysql://${DATABASE_URL}/${DATABASE}?serverTimezone=Asia/Seoul
+    username: ${MYSQL_ID}
+    password: ${MYSQL_PASSWORD}
     hikari:
       maximum-pool-size: 20
       minimum-idle: 10
 
   data:
     redis:
-      host: ${REDIS_HOST_PROD}
+      host: ${REDIS_HOST}
       port: 6379
 
   kafka:
-    bootstrap-servers: ${KAFKA_SERVER_IP_PROD}  # Kafka 서버 접속 주소
+    bootstrap-servers: ${KAFKA_SERVER_IP}  # Kafka 서버 접속 주소
     consumer:
       group-id: ${KAFKA_GROUP_ID}  # 컨슈머 그룹 식별자
       auto-offset-reset: earliest  # 초기 오프셋(가장 처음 메세지부터 소비)
 
-redirect-url: https://www.ubot.site/
+app:
+  oauth:
+    redirect-url: https://www.ubot.site/
 
 management:
   endpoints:

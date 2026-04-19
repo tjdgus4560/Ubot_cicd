@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 /**
@@ -27,6 +28,8 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ChartFullSyncExecutor {
+    private static final ZoneId KST = ZoneId.of("Asia/Seoul");
+
     private final UpbitApiClient upbitApiClient;
     private final ChartPersistHelper persistHelper;
     private final ChartSyncMetaRepository chartSyncMetaRepository;
@@ -37,7 +40,7 @@ public class ChartFullSyncExecutor {
         final int maxSyncCount = 1000;
         int totalSyncedCount = 0;
 
-        LocalDateTime toTime = LocalDateTime.now();
+        LocalDateTime toTime = LocalDateTime.now(KST);
         LocalDateTime fullSyncedLatestTime = null;
 
         while (totalSyncedCount < maxSyncCount) {

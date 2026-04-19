@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -33,6 +34,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ChartDeltaSyncExecutor {
+    private static final ZoneId KST = ZoneId.of("Asia/Seoul");
 
     private final UpbitApiClient upbitApiClient;
     private final ChartPersistHelper persistHelper;
@@ -56,7 +58,7 @@ public class ChartDeltaSyncExecutor {
             return DeltaSyncResult.empty();
         }
 
-        LocalDateTime toTime = LocalDateTime.now();
+        LocalDateTime toTime = LocalDateTime.now(KST);
         LocalDateTime maxSyncedAt = lastSyncedAt;
         LocalDateTime deltaSyncedLatestTime = null;
         int totalSyncedCount = 0;
@@ -74,7 +76,7 @@ public class ChartDeltaSyncExecutor {
                 break;
             }
 
-            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime now = LocalDateTime.now(KST);
 
             // 필터조건 :
             // 1. 가장최신 싱크된 캔들 이후의 캔들만 저장

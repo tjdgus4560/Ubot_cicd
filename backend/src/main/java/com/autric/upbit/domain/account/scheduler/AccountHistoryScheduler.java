@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class AccountHistoryScheduler {
+    private static final ZoneId KST = ZoneId.of("Asia/Seoul");
 
     private final AccountService accountService;
     private final MemberRepository memberRepository;
@@ -34,7 +36,7 @@ public class AccountHistoryScheduler {
         log.info("AccountHistoryScheduler 시작 → 전체 회원 스냅샷 저장");
 
         // 스냅샷 날짜는 전일 (업비트 기준 어제 09:00 ~ 오늘 08:59 범위)
-        LocalDate snapshotDate = LocalDate.now().minusDays(1);
+        LocalDate snapshotDate = LocalDate.now(KST).minusDays(1);
 
         // API 키가 등록된 회원만 조회
         List<Member> members = memberRepository.findAll().stream()

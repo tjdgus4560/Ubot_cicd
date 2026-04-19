@@ -6,6 +6,8 @@ services:
       dockerfile: Dockerfile
     env_file:
       - ../../frontend/.env.prod
+    environment:
+      TZ: Asia/Seoul
     restart: unless-stopped
     expose:
       - "3000"
@@ -19,6 +21,8 @@ services:
       dockerfile: Dockerfile
     env_file:
       - ../../backend/.env.prod
+    environment:
+      TZ: Asia/Seoul
     restart: unless-stopped
     expose:
       - "8080"
@@ -32,6 +36,8 @@ services:
       dockerfile: Dockerfile
     env_file:
       - ../../strategy_fastapi/.env.prod
+    environment:
+      TZ: Asia/Seoul
     restart: unless-stopped
     expose:
       - "8000"

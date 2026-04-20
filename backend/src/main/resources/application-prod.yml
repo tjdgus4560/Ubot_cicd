@@ -21,7 +21,7 @@ spring:
 
 app:
   oauth:
-    redirect-url: https://ubot2.site/
+    redirect-url: http://ubot2.site/
 
 management:
   endpoints:
